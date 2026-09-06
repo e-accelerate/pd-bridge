@@ -6,7 +6,7 @@ PY_MAC   ?= python3          # the oMLX venv python (e.g. ~/omlx064/bin/python)
 FRONT    ?= http://127.0.0.1:8012
 NATIVE   ?= http://127.0.0.1:8011
 
-.PHONY: help doctor test test-mac test-spark weights demo bench-quick scrub-check
+.PHONY: help doctor test test-mac test-spark weights demo bench-quick scrub-check test-runner
 
 help:
 	@echo "make doctor      — check every link in the chain (run this first, always)"
@@ -20,7 +20,10 @@ help:
 
 doctor: ; @bash scripts/hetero-doctor.sh
 
-test:
+test-runner:
+	python3 -m unittest discover -s tests -v
+
+test: test-runner
 	$(PY_SPARK) spark/pd_pool_selftest.py --T 5000
 	bash scripts/scrub-check.sh
 
@@ -41,15 +44,6 @@ demo:
 	@echo "Each line's \"bridge\" field is the front door's own verdict — read it, don't trust the label."
 
 bench-quick:
-	@for s in 911 913 915; do \
-	  python3 bench/bench_cold.py --chars 75000  --seed $$s --url $(FRONT); \
-	  python3 bench/bench_cold.py --chars 330000 --seed $$s --url $(FRONT); \
-	  python3 bench/bench_cold.py --chars 410000 --seed $$s --url $(FRONT); \
-	  python3 bench/bench_cold.py --chars 75000  --seed $$((s+1)) --url $(NATIVE); \
-	  python3 bench/bench_cold.py --chars 330000 --seed $$((s+1)) --url $(NATIVE); \
-	  python3 bench/bench_cold.py --chars 410000 --seed $$((s+1)) --url $(NATIVE); \
-	done | tee results/bench-quick-$$(date +%Y%m%d-%H%M).jsonl
-	@echo "Every line carries the X-PD-Bridge verdict. A line whose 'bridge' field is missing,"
-	@echo "skipped, or contains bridge_error is NOT a bridged number — see BENCHMARK-PROTOCOL.md."
+	bash scripts/bench-quick.sh
 
 scrub-check: ; @bash scripts/scrub-check.sh

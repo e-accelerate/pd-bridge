@@ -9,3 +9,6 @@ captures/
 pd_pull/
 *.jsonl
 .scrub-private
+
+# Local benchmark output (unique filenames contain JSONL)
+/results/

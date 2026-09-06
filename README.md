@@ -1,5 +1,11 @@
 # pd-bridge — heterogeneous prefill/decode for DeepSeek-V4-Flash
 
+> **e-accelerate fork:** The original bridge design, implementation, and published inference
+> results are by [Chad Hurley / pd-bridge](https://github.com/chadhurley25075-png/pd-bridge).
+> This fork adds a tested benchmark-runner reliability improvement; see
+> [our contribution notes](docs/E-ACCELERATE.md). Upstream benchmark numbers below have
+> not been independently reproduced by e-accelerate. Original LICENSE and NOTICE are retained.
+
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![status: reference implementation](https://img.shields.io/badge/status-reference%20implementation-orange.svg)](#status-honestly)
 [![model: DeepSeek-V4-Flash](https://img.shields.io/badge/model-DeepSeek--V4--Flash-8A2BE2.svg)](https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash)
